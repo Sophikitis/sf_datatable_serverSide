@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CandidateController!{% endblock %}
+
+{% block body %}
+
+    <div class="card">
+        <div class="card-body">
+            <p>{{ candidate.id }}</p>
+            <p>{{ candidate.firstname }}</p>
+            <p>{{ candidate.lastname }}</p>
+        </div>
+    </div>
+
+{% endblock %}
