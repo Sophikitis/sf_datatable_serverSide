@@ -27,6 +27,8 @@ const routes = require('../data/fos_js_routes.json');
 import Routing from '../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js';
 Routing.setRoutingData(routes);
 
+
+
 console.log(
     Routing.generate('candidate_show' ),
 )
@@ -35,6 +37,7 @@ console.log(
 
 
 $(document).ready( function () {
+    let token = $('#table_id').first().data('deleteToken');
 
     var table = $('#table_id').DataTable(
         {
@@ -81,14 +84,21 @@ $(document).ready( function () {
                     searchable: true
                 },
                 {
+                    searchable: false,
                     targets: 3,
                     data: 'id',
                     render: function(data, type, full, meta){
+                        console.log(full)
+
                         if(type === 'display'){
                             // content
                             data =
-                                '<a href="'+Routing.generate('candidate_show',{ id: data })+'">show</a>'+
-                                '<button data-url="'+Routing.generate('candidate_delete',{ id: data })+'">delete</button>'
+                                '<div class="btn-list">'+
+                                '<a class="btn btn-white btn-square" href="'+Routing.generate('candidate_show',{ id: data })+'">show</a>'+
+                                '<button class="btn btn-white btn-square" data-method="DELETE" data-token='+token+' data-url="'+Routing.generate('candidate_delete',{ id: data })+'">' +
+                                'delete' +
+                                '</button>' +
+                                '</div>'
                         }
 
                         return data;
@@ -100,7 +110,19 @@ $(document).ready( function () {
     );
 
     $('#table_id tbody').on( 'click', 'button', function () {
-        alert('TODO AJAX DELETE');
+        let element = $(this).parents('tr');
+        $.ajax({
+            url: this.dataset.url,
+            method: this.dataset.method,
+            data: { CSRF: this.dataset.token}
+        }).done(function() {
+            table
+                .row(element)
+                .remove()
+                .draw();
+        }).fail(function(){
+            console.log('error')
+        });
     } );
 
 

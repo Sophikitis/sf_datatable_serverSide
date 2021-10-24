@@ -15,7 +15,6 @@ class DataDataTableController extends AbstractController
 
 
     /**
-     * @IsGranted("ROLE_USER")
      * @Route("/data", name="data_datatable")
      */
     public function index(Request $request, CandidatesRepository $candidatesRepository): Response
@@ -100,7 +99,9 @@ class DataDataTableController extends AbstractController
 
 
             // debug
-            dump($draw, $start, $length, $searching, $orders, $columns, $_GET, $_POST);
+//            dump($draw, $start, $length, $searching, $orders, $columns, $_GET, $_POST);
+
+
 
             $output = [
                 'draw' => $draw ?? null,
@@ -114,7 +115,7 @@ class DataDataTableController extends AbstractController
             $output=['error' => 'Method is not allowed'];
         }
 
-        return $this->json($output);
+        return $this->json($output, 200, [], ['test']);
 
     }
 }

@@ -4,6 +4,9 @@ namespace App\Entity;
 
 use App\Repository\CandidatesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CandidatesRepository::class)
@@ -26,6 +29,18 @@ class Candidates
      * @ORM\Column(type="string", length=255)
      */
     private $lastname;
+
+
+    /**
+     *
+     * return TEST
+     * @Groups({"test"})
+     * @return float
+     */
+    public function getActions()
+    {
+        return 'TODO';
+    }
 
     public function getId(): ?int
     {

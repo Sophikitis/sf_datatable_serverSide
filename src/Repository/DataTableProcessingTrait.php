@@ -23,6 +23,7 @@ trait DataTableProcessingTrait
             $qb->orderBy('q.'.$ordering['field'],$ordering['dir'] );
         }
 
+//        dd($qb->getDQL());
 
         return $qb->getQuery()
             ->getResult()
