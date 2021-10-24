@@ -20,35 +20,8 @@ class DataDataTableController extends AbstractController
      */
     public function index(Request $request, CandidatesRepository $candidatesRepository): Response
     {
-        /* TODO THINK:
-
-        generate route by RoutingJS Or manually return in data response the path for specific actions
-
-        ex candidate :
-        -id : 1
-        -firstname : foo
-        -lastname : bar
-        -action_show : /candidate/show/{id}
-        -action_update : /candidate/update/{id}
-        -action_delete : /candidate/delete/{id}
-        -action_delete_token: XXXXXXXXX
-
-        OR
-
-        directly in entity with context specific when data is serialize in json
-
-        candidate->getActionUpdate()
-
-        getActionUpdate :
-            generatepath
-            createToken ?
-
-
-         * */
-
 
         /* TODO :
-        - secure access token
         - add click info :
             - click on the row -> call ajax getInfos -> display popup with informations
          * */
@@ -100,10 +73,10 @@ class DataDataTableController extends AbstractController
 
 
             // debug
-//            dump($draw, $start, $length, $searching, $orders, $columns, $_GET, $_POST);
+            // dump($draw, $start, $length, $searching, $orders, $columns, $_GET, $_POST);
 
 
-
+            // todo recordFiltered count(all with search)
             $output = [
                 'draw' => $draw ?? null,
                 "recordsTotal"=> $totalCount ?? null,

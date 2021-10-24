@@ -20,7 +20,7 @@ class AppFixtures extends Fixture
     {
         $faker = Faker\Factory::create();
 
-        for ($i=1; $i <= 100; $i++){
+        for ($i=1; $i <= 2000; $i++){
             $candidate = new Candidates();
             $candidate->setFirstname($faker->firstName);
             $candidate->setLastname($faker->lastName);

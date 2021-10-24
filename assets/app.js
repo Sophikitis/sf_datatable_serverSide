@@ -37,7 +37,6 @@ console.log(
 
 
 $(document).ready( function () {
-    let token = $('#table_id').first().data('deleteToken');
 
     var table = $('#table_id').DataTable(
         {
@@ -88,7 +87,7 @@ $(document).ready( function () {
                     targets: 3,
                     data: 'id',
                     render: function(data, type, full, meta){
-                        console.log(full)
+                        let token = $('#table_id').first().data('deleteToken');
 
                         if(type === 'display'){
                             // content
