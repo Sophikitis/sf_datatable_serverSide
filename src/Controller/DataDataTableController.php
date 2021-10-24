@@ -15,6 +15,7 @@ class DataDataTableController extends AbstractController
 
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/data", name="data_datatable")
      */
     public function index(Request $request, CandidatesRepository $candidatesRepository): Response
