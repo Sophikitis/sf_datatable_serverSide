@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Candidates;
+use App\Entity\Tags;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -24,6 +25,16 @@ class AppFixtures extends Fixture
             $candidate = new Candidates();
             $candidate->setFirstname($faker->firstName);
             $candidate->setLastname($faker->lastName);
+
+            for ($j=1; $j <= 10; $j++){
+                $tags = new Tags();
+                $tags->setTag($faker->citySuffix);
+                $tags->setValue($faker->city);
+                $candidate->addTag($tags);
+
+                $manager->persist($tags);
+            }
+
             $manager->persist($candidate);
         }
 

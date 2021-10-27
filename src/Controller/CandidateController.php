@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Candidates;
+use App\Repository\CandidatesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,6 +33,14 @@ class CandidateController extends AbstractController
         ]);
     }
 
+
+
+    /*AJAX
+
+
+    _____________________________*/
+
+
     /**
      * @Route("/candidate/{id}", name="candidate_delete", options={"expose"=true}, methods={"DELETE"})
      */
@@ -47,6 +56,19 @@ class CandidateController extends AbstractController
         }
 
         return $this->json(['error'], 400);
+    }
+
+
+    // BETA
+    /**
+     * @Route("/candidate/detail/ajax", name="candidate_detail_dt", options={"expose"=true}, methods={"POST"})
+     */
+    public function detail(Request $request, CandidatesRepository $candidatesRepository): Response
+    {
+        $id = $request->request->get('id');
+        $can = $candidatesRepository->find($id);
+
+        return $this->json($can, 200, [], ['groups' => 'candidate_tags_read']);
     }
 
 

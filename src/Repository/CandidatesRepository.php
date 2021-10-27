@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Candidates;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,64 +13,20 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Candidates[]    findAll()
  * @method Candidates[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CandidatesRepository extends ServiceEntityRepository
+class CandidatesRepository extends AbstractDatatableProcessing
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Candidates::class);
     }
 
-    use DataTableProcessingTrait;
-
-    // /**
-    //  * @return Candidates[] Returns an array of Candidates objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    protected function customRequestProcessing(QueryBuilder $qb):void
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Candidates
+    protected function customSearchProcessing(QueryBuilder $qb):void
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return;
     }
-    */
-//    public function processingCandidate($start, $max, $searching = [], $ordering=null)
-//    {
-//        $qb = $this->createQueryBuilder('q')
-//            ->setFirstResult($start)
-//            ->setMaxResults($max)
-//            ;
-//
-//        if (!empty($searching) && $searching['search'] && !empty($searching['fieldsForSearching'])){
-//            foreach ($searching['fieldsForSearching'] as $index => $field) {
-//                $qb->orWhere('q.'.$field.' like :search');
-//            }
-//            $qb->setParameter('search', $searching['search'].'%');
-//        }
-//
-//        if ($ordering){
-//            $qb->orderBy('q.'.$ordering['field'],$ordering['dir'] );
-//        }
-//
-//
-//        return $qb->getQuery()
-//            ->getResult()
-//            ;
-//    }
 }

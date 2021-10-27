@@ -14,7 +14,10 @@ trait DataTableProcessingTrait
 
         if (!empty($searching) && $searching['search'] && !empty($searching['fieldsForSearching'])){
             foreach ($searching['fieldsForSearching'] as $index => $field) {
-                $qb->orWhere('q.'.$field.' like :search');
+                // Si on a oublié de nommer la column valeur sera vide, afin d'eviter une erreur on fait une verification
+                if (!empty($field)){
+                    $qb->orWhere('q.'.$field.' like :search');
+                }
             }
             $qb->setParameter('search', $searching['search'].'%');
         }
