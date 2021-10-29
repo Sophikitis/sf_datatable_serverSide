@@ -6,7 +6,14 @@
 
     <div class="card">
         <div class="card-body">
-            <table id="table_id" class="display" data-delete-token="{{ csrf_token('delete'~user) }}">
+            <table id="table_id"
+                   class="display"
+                   data-url-data="{{ path('data_datatable') }}"
+                   data-delete-token="{{ csrf_token('delete'~user) }}"
+                   data-delete="{{ path('candidate_delete', {id:0})|slice(1, -1) }}"
+                   data-show="{{ path('candidate_show', {id:0})|slice(1, -1) }}"
+                   data-detail="{{ path('candidate_detail_dt')}}"
+            >
             </table>
         </div>
     </div>
@@ -42,22 +49,5 @@
             </div>
         </div>
     </div>
-
-
-
-
-    <style>
-        td.details-control {
-            background: url('https://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
-            cursor: pointer;
-        }
-        tr.shown td.details-control {
-            background: url('https://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
-        }
-    </style>
-
-
-
-
 
 {% endblock %}

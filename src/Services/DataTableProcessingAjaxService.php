@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repository\AbstractDatatableProcessing;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 
 class DataTableProcessingAjaxService
 {
@@ -11,8 +12,6 @@ class DataTableProcessingAjaxService
     public function serverSide(Request $request, AbstractDatatableProcessing $repository): array
     {
         if ($request->isMethod('POST') && $request->isXmlHttpRequest()) {
-            // total row in bdd
-            $totalCount = $repository->count([]);
 
             // get request elements
             $draw = (int)$request->request->get('draw');
@@ -21,15 +20,23 @@ class DataTableProcessingAjaxService
             $search = $request->request->get('search');
             $orders = $request->request->get('order');
             $columns = $request->request->get('columns');
-
-
-            /*SEARCH PART*/
+            // options request init
             $searching = ['search' => null, 'fieldsForSearching' => []];
-            // get string for searching
+            $ordering = null;
+
+
+            /* SEARCH PART
+
+            Verifie qu'il y'a une valeur dans $search, si c'est le cas on va boucler
+            sur toutes les colonnes afin de verifier si la colonne est autorisé a etre
+            filtrer par la fonction search.
+
+            Si elle l'est, on recupere le nom de la colonne qui doit etre iso au champs de l'entité,
+            et on l'ajoute on tableau des champs sur lequelle on va faire la recherhche
+             * */
             if (!empty($search['value'])) {
                 $searching['search'] = $search['value'];
-
-                foreach ($columns as $index => $column) {
+                foreach ($columns as $column) {
                     // get name field on searchable is enabled
                     if ($column['searchable'] === 'true') {
                         $searching['fieldsForSearching'][] = $column['name'];
@@ -38,7 +45,6 @@ class DataTableProcessingAjaxService
             }
 
             /*ORDER PART*/
-            $ordering = null;
             foreach ($orders as $order) {
                 if (array_key_exists($order['column'], $columns)) {
                     $column = $columns[$order['column']];
@@ -48,22 +54,14 @@ class DataTableProcessingAjaxService
                 }
             }
 
-            // request
-            // TODO : change param searching
-            $candidate = $repository->processing($start, $length, $searching, $ordering);
+            $entity = $repository->processing($start, $length, $searching, $ordering);
 
-
-            // debug
-            dump($draw, $start, $length, $searching, $orders, $columns, $_GET, $_POST);
-
-
-            // todo recordFiltered count(all with search)
+            $recordsTotal = $repository->count([]);
             $output = [
-                'draw' => $draw ?? null,
-                "recordsTotal"=> $totalCount ?? null,
-                "recordsFiltered"=> $searching['search'] ? count($candidate) : $totalCount,
-                'data' => $candidate,
-                'error' => ''
+                'draw' => $draw,
+                "recordsTotal"=> $recordsTotal,
+                "recordsFiltered"=> $entity['recordsFiltered'] ?? $recordsTotal,
+                'data' => $entity['data'],
             ];
 
         }else{
@@ -72,6 +70,5 @@ class DataTableProcessingAjaxService
 
         return $output;
     }
-
 
 }

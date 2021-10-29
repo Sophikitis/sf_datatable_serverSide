@@ -2,6 +2,10 @@
 
 namespace App\Entity;
 
+use Psr\Container\ContainerInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -36,6 +40,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 trait DataTableServerSideParamData
 {
+
+
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    public function __construct($router)
+    {
+        $this->router = $router;
+    }
 
     /**
      * @Groups({"dtRowId", "dtFull"})

@@ -24,10 +24,11 @@ class CandidateController extends AbstractController
 
     /**
      * @Route("/candidate/{id}", name="candidate_show", options={"expose"=true}, methods={"GET", "POST"})
+
+     *
      */
-    public function show(Candidates $candidate): Response
+    public function show(Candidates $candidate = null): Response
     {
-        dump('ok');
         return $this->render('candidate/show.html.twig', [
             'candidate' => $candidate,
         ]);

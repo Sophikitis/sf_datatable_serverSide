@@ -3,12 +3,22 @@
 namespace App\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 
 abstract class AbstractDatatableProcessing extends ServiceEntityRepository
 {
 
-    public function processing($start, $max, $searching = [], $ordering=null)
+    /**
+     * Retour un tableau contenant le total
+     *
+     * @param $start
+     * @param $max
+     * @param array $searching
+     * @param null $ordering
+     * @return array
+     */
+    public function processing($start, $max, array $searching = [], $ordering=null): array
     {
         $qb = $this->createQueryBuilder('q')
             ->setFirstResult($start)
@@ -22,7 +32,7 @@ abstract class AbstractDatatableProcessing extends ServiceEntityRepository
                     $qb->orWhere('q.'.$field.' like :search');
                 }
             }
-
+            // INSERT CUSTOM SEARCH WITH ABSTRACT METHOD
             $this->customSearchProcessing($qb);
 
             $qb->setParameter('search', $searching['search'].'%');
@@ -33,12 +43,24 @@ abstract class AbstractDatatableProcessing extends ServiceEntityRepository
             $qb->orderBy('q.'.$ordering['field'],$ordering['dir'] );
         }
 
+        // INSERT CUSTOM REQUEST WITH ABSTRACT METHOD
         $this->customRequestProcessing($qb);
 
+        // recuperation des données filtrées
+        $data = $qb->getQuery()->getResult();
 
-        return $qb->getQuery()
-            ->getResult()
-            ;
+        // recuperation du nombre d'elements filtrés si on a une valeur de recherche
+        if (!empty($searching)){
+            $qb->select('count(q.id)');
+            $qb->setFirstResult(null);
+            $total = $qb->getQuery()->getResult(AbstractQuery::HYDRATE_SINGLE_SCALAR);
+        }
+
+        return [
+            'recordsFiltered' => isset($total) ? (int)$total : null,
+            'data'=> $data
+        ];
+
     }
 
     /**

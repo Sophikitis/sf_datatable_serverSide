@@ -15,6 +15,8 @@ class Candidates
 {
     use DataTableServerSideParamData;
 
+
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -122,4 +124,6 @@ class Candidates
 
         return $this;
     }
+
+
 }

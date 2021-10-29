@@ -19,7 +19,7 @@ class DataDataTableController extends AbstractController
     public function index(Request $request, CandidatesRepository $candidatesRepository, DataTableProcessingAjaxService $dataTableProcessingAjax): Response
     {
         $output = $dataTableProcessingAjax->serverSide($request, $candidatesRepository);
-        return $this->json($output, 200, [], ['groups' => ['dtCandidate','dtRowId', 'dtRowClass']]);
+        return $this->json($output, 200, [], ['groups' => ['dt_actions','dtCandidate','dtRowId', 'dtRowClass']]);
     }
 
 

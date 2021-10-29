@@ -21,12 +21,8 @@ class CandidatesRepository extends AbstractDatatableProcessing
     }
 
     protected function customRequestProcessing(QueryBuilder $qb):void
-    {
-        return;
-    }
+    {return;}
 
     protected function customSearchProcessing(QueryBuilder $qb):void
-    {
-        return;
-    }
+    {return;}
 }

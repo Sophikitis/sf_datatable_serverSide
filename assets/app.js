@@ -10,10 +10,9 @@ const $ = require('jquery');
 global.$ = global.jQuery = $;
 
 
-
-
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
+import './styles/custom.scss';
 
 // start the Stimulus application
 import './bootstrap';
@@ -21,32 +20,32 @@ import './bootstrap';
 import '@tabler/core/dist/js/tabler.min'
 import '@tabler/core/dist/css/tabler.min.css'
 
+require('@fortawesome/fontawesome-free/css/all.min.css');
+require('@fortawesome/fontawesome-free/js/all.js');
+
+
 import 'datatables.net/js/jquery.dataTables.min'
 import 'datatables.net-dt/css/jquery.dataTables.min.css'
 
-const routes = require('../data/fos_js_routes.json');
-import Routing from '../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js';
-Routing.setRoutingData(routes);
-
-
-console.log(
-    Routing.generate('candidate_show' ),
-)
-
 $(document).ready( function () {
 
-    var table = $('#table_id').DataTable(
+    let table =  $('#table_id');
+    let dtUrlData = table.first().data('urlData');
+
+
+    var dt = table.DataTable(
         {
             autoWidth: false,
-            processing: false,
-            search: {
-                return: true
-
-            },
-            order: [[1, 'asc']],
             serverSide: true,
+            processing: false,
+            search: {return: true},
+            order: [[1, 'asc']],
+            paging : true,
+            info : true,
+            searching: true,
+            responsive: true,
             ajax: {
-                url: 'http://127.0.0.1:8000/data',
+                url: dtUrlData,
                 method: 'POST'
             },
             columns: [
@@ -60,12 +59,7 @@ $(document).ready( function () {
                 { data: "firstname"},
                 { data: "lastname"}
             ],
-            paging : true,
-            info : true,
-            searching: true,
-            responsive: true,
             columnDefs: [
-
                 {
                     name: "id",
                     targets: 1,
@@ -89,27 +83,31 @@ $(document).ready( function () {
                     searchable: true
                 },
                 {
+                    orderable: false,
                     searchable: false,
                     targets: 4,
                     data: 'id',
                     render: function(data, type, full, meta){
-                        let token = $('#table_id').first().data('deleteToken');
+                        let token = table.first().data('deleteToken');
+                        let showUrl = table.first().data('show')  + data;
+                        let tokenUrl = table.first().data('delete') + data;
 
                         if(type === 'display'){
                             // content
                             data =
                                 '<div class="btn-list justify-content-end">'+
-                                '<a class="btn btn-white btn-square" href="'+Routing.generate('candidate_show',{ id: data })+'">show</a>'+
-                                '<button id="token_delete" class="btn btn-white btn-square" data-method="DELETE" data-token='+token+' data-url="'+Routing.generate('candidate_delete',{ id: data })+'">' +
+                                '<a class="btn btn-white btn-square" href="'+showUrl+'">show</a>'+
+                                '<button id="token_delete" class="btn btn-white btn-square" data-method="DELETE" data-token='+token+' data-url="'+tokenUrl+'">' +
                                 'delete' +
                                 '</button>' +
-                                '<button id="token_detail" class="btn btn-white btn-square" data-url="#">Details</button>'+
                                 '</div>'
                         }
 
                         return data;
-                    }
+                    },
+
                 },
+
 
 
             ],
@@ -117,6 +115,10 @@ $(document).ready( function () {
     );
 
 
+
+    /*DELETE ACTION
+    *
+    * ______________________________________________________________*/
     $('#table_id tbody').on( 'click', '#token_delete', function () {
         let element = $(this).parents('tr');
         let url = this.dataset.url
@@ -137,7 +139,7 @@ $(document).ready( function () {
                 method: method,
                 data: { CSRF: data}
             }).done(function() {
-                table
+                dt
                     .row(element)
                     .remove()
                     .draw();
@@ -150,51 +152,43 @@ $(document).ready( function () {
         });
     } );
 
-    $('#table_id tbody').on( 'click', '#token_detail', function () {
-        alert('coucou');
-    } );
 
 
 
     // todo : comprendre ca
-    $('#table_id').on('requestChild.dt', function(e, row) {
+    table.on('requestChild.dt', function(e, row) {
         console.log('click here => requestChild');
         row.child(format(row.data())).show();
     })
 
-    $('#table_id').on('click', 'tbody td.dt-control', function (el, data) {
-        var tr = $(this).closest('tr');
-        var row = table.row( tr );
+    // ______________________________________________________
 
-        // data-url="'+Routing.generate('candidate_detail_dt')
 
-        // candidate_detail_dt
+
+    /*DETAIL ACTION
+    *
+    * ______________________*/
+    table.on('click', 'tbody td.dt-control', function (el, data) {
+        const tr = $(this).closest('tr');
+        const row = dt.row(tr);
+        let urlDetail = table.first().data('detail');
+
         $.ajax({
-            url: Routing.generate('candidate_detail_dt'),
+            url: urlDetail,
             method: 'POST',
             data: { id: row.data().id}
         }).done(function(data) {
-
-            // debugger
-
-
             if ( row.child.isShown() ) {
-                // This row is already open - close it
                 row.child.hide();
-            }
-            else {
-                // Open this row
+            }else{
                 row.child( format(data) ).show();
             }
         }).fail(function(){
             console.log('error')
         });
-
-
-
-
-
     } );
+
+
 
     function format ( d ) {
         let htmlContent = ''
@@ -212,4 +206,4 @@ $(document).ready( function () {
     }
 
 
-} );
+} )

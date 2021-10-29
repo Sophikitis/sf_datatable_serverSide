@@ -5,6 +5,8 @@
         "core-js": "^3.0.0",
         "jquery": "^3.6.0",
         "regenerator-runtime": "^0.13.2",
+        "sass": "^1.43.4",
+        "sass-loader": "^12.0.0",
         "stimulus": "^2.0.0",
         "webpack-notifier": "^1.6.0"
     },
@@ -17,7 +19,9 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.4",
         "@tabler/core": "^1.0.0-beta2",
+        "@tabler/icons": "^1.41.2",
         "datatables.net": "^1.11.3",
         "datatables.net-dt": "^1.11.3"
     }
