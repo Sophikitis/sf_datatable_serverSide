@@ -24,7 +24,6 @@ class CandidateController extends AbstractController
 
     /**
      * @Route("/candidate/{id}", name="candidate_show", options={"expose"=true}, methods={"GET", "POST"})
-
      *
      */
     public function show(Candidates $candidate = null): Response

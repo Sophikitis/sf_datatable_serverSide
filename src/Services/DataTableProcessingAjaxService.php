@@ -4,14 +4,18 @@ namespace App\Services;
 
 use App\Repository\AbstractDatatableProcessing;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RouterInterface;
 
 class DataTableProcessingAjaxService
 {
 
+    /***
+     * @param Request $request
+     * @param AbstractDatatableProcessing $repository
+     * @return array|string[]
+     */
     public function serverSide(Request $request, AbstractDatatableProcessing $repository): array
     {
-        if ($request->isMethod('POST') && $request->isXmlHttpRequest()) {
+        if ($request->isMethod('POST') && !$request->isXmlHttpRequest()) {
 
             // get request elements
             $draw = (int)$request->request->get('draw');
@@ -55,8 +59,8 @@ class DataTableProcessingAjaxService
             }
 
             $entity = $repository->processing($start, $length, $searching, $ordering);
-
             $recordsTotal = $repository->count([]);
+
             $output = [
                 'draw' => $draw,
                 "recordsTotal"=> $recordsTotal,

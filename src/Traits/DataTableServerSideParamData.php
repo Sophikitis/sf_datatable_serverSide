@@ -1,10 +1,7 @@
 <?php
 
-namespace App\Entity;
+namespace App\Traits;
 
-use Psr\Container\ContainerInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
