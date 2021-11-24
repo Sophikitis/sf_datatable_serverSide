@@ -118,6 +118,9 @@
     "fzaninotto/faker": {
         "version": "v1.9.2"
     },
+    "hcnx/datatable-server-side-bundle": {
+        "version": "1.0.2"
+    },
     "laminas/laminas-code": {
         "version": "3.4.1"
     },

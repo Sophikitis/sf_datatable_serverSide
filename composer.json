@@ -12,6 +12,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.10",
         "friendsofsymfony/jsrouting-bundle": "^2.7",
+        "hcnx/datatable-server-side-bundle": "^1.0",
         "phpdocumentor/reflection-docblock": "^5.3",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "4.4.*",
@@ -95,5 +96,11 @@
             "allow-contrib": false,
             "require": "4.4.*"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://bitbucket.hcnx.eu/scm/bundle/hcnx_bundle_datatable_serverside.git"
+        }
+    ]
 }
