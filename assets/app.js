@@ -11,8 +11,8 @@ global.$ = global.jQuery = $;
 
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './styles/app.css';
-import './styles/custom.scss';
+// import './styles/app.css';
+// import './styles/custom.scss';
 
 // start the Stimulus application
 import './bootstrap';
@@ -96,8 +96,8 @@ $(document).ready( function () {
                             // content
                             data =
                                 '<div class="btn-list justify-content-end">'+
-                                '<a class="btn btn-white btn-square" href="'+showUrl+'">show</a>'+
-                                '<button id="token_delete" class="btn btn-white btn-square" data-method="DELETE" data-token='+token+' data-url="'+tokenUrl+'">' +
+                                '<a class="btn btn-white btn-square" href="/'+showUrl+'">show</a>'+
+                                '<button id="token_delete" class="btn btn-white btn-square" data-method="DELETE" data-token='+token+' data-url="/'+tokenUrl+'">' +
                                 'delete' +
                                 '</button>' +
                                 '</div>'
@@ -191,6 +191,11 @@ $(document).ready( function () {
 
 
     function format ( d ) {
+
+        if (d.tags.length === 0){
+            return "data not found"
+        }
+
         let htmlContent = ''
         d.tags.forEach(el => {
             htmlContent +=

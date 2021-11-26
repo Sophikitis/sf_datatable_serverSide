@@ -76,7 +76,7 @@ class User implements UserInterface
      */
     public function getPassword(): ?string
     {
-        return admin;
+        return 123456;
     }
 
     /**

@@ -1727,11 +1727,11 @@
         },
         {
             "name": "hcnx/datatable-server-side-bundle",
-            "version": "1.0.5",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.hcnx.eu/scm/bundle/hcnx_bundle_datatable_serverside.git",
-                "reference": "216a5d48e6e9e08dbec5a6e6d971ec9ee9505363"
+                "reference": "a7c7ccbae9732383dc2ae2698eda1b73d99cc57c"
             },
             "require": {
                 "php": ">=7.2"
@@ -1749,7 +1749,7 @@
                 }
             ],
             "description": "Part of server-side processing for datable and symfony",
-            "time": "2021-11-24T08:20:09+00:00"
+            "time": "2021-11-26T10:04:16+00:00"
         },
         {
             "name": "laminas/laminas-code",
@@ -8958,7 +8958,6 @@
                     "type": "github"
                 }
             ],
-            "abandoned": true,
             "time": "2020-09-28T06:45:17+00:00"
         },
         {

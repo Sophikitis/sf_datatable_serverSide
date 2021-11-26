@@ -22,12 +22,12 @@ class CandidatesRepository extends AbstractDatatableProcessing
         parent::__construct($registry, Candidates::class);
     }
 
-    protected function customRequestProcessing(QueryBuilder $qb):void
+    protected function customRequestProcessing(QueryBuilder $qb, array $options):void
     {
         return;
     }
 
-    protected function customSearchProcessing(QueryBuilder $qb):void
+    protected function customSearchProcessing(QueryBuilder $qb, array $options):void
     {
         $qb->leftJoin(Tags::class, 't', 'WITH', 'q.id = t.candidates');
         $qb->orWhere('t.value like :search');
